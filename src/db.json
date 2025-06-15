@@ -1,0 +1,54 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "Understanding Frontend Development in Depth",
+      "body": "Frontend development involves creating the visual and interactive elements of a web application. It includes HTML, CSS, JavaScript, and libraries or frameworks like React, Vue, or Angular. Developers focus on usability, performance, and responsiveness to deliver a great user experience."
+    },
+    {
+      "id": 2,
+      "title": "Getting Started with JSON Server",
+      "body": "JSON Server is a quick and easy way to mock a REST API using a simple JSON file. It supports all HTTP methods and comes with features like filtering, pagination, and full CRUD operations. It’s ideal for prototyping, frontend development, and testing."
+    },
+    {
+      "id": 3,
+      "title": "React Query: Fetching and Caching Data Made Easy",
+      "body": "React Query simplifies data fetching, caching, synchronization, and background updates in React apps. It allows developers to focus on UI while handling retries, pagination, and invalidation logic under the hood."
+    },
+    {
+      "id": 4,
+      "title": "Best Practices for Writing Scalable React Components",
+      "body": "To build scalable React apps, structure your components for reusability, use proper folder organization, prefer composition over inheritance, and manage state wisely using hooks or external libraries like Zustand or Redux."
+    },
+    {
+      "id": 5,
+      "title": "hello from Mohammad ward",
+      "body": "this is a test of local api made with nextjs. It’s structured as a REST endpoint using the latest App Router system and simulates real-world dynamic routes and handlers for seamless integration."
+    },
+    {
+      "id": 6,
+      "title": "hello again from Mohammad ward",
+      "body": "this is another test to verify if multiple posts are fetched correctly using local APIs in Next.js. It also ensures the pagination and delete features work as intended."
+    },
+    {
+      "id": 7,
+      "title": "Developing a Modern Web App with Next.js 15",
+      "body": "Next.js 15 introduces a more powerful App Router, allowing developers to build server-first React apps with enhanced performance and better API management using file-based routing."
+    },
+    {
+      "id": 8,
+      "title": "Integrating React Query with JSON Server",
+      "body": "React Query combined with JSON Server enables fast UI updates, optimistic mutation, and robust caching. It’s a great combo for frontend developers needing real API-like behavior in development."
+    },
+    {
+      "id": 9,
+      "title": "Advanced Pagination with TailwindCSS and React",
+      "body": "Implementing pagination in React using TailwindCSS provides great flexibility and styling. You can combine custom pagination logic with UI components to manage large datasets with ease."
+    },
+    {
+      "id": 10,
+      "title": "Modal Management using Context API in React",
+      "body": "Managing modals globally in React using Context API helps in keeping only one modal mounted at a time and simplifies the state management for complex UI interactions."
+    }
+  ]
+}
