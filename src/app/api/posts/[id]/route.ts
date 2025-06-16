@@ -1,63 +1,81 @@
-import { readDB, writeDB } from "@/lib/db.util";
-import { Post } from "@/lib/types";
+import { connectDB } from "@/lib/db.util";
+import { PostModel } from "@/models/post.schema";
 import { NextRequest, NextResponse } from "next/server";
-interface Params {
-  params: Promise<{
-    id: string;
-  }>;
-}
 
-export async function DELETE(req: NextRequest, { params }: Params) {
-  const db = await readDB();
-  const id = Number((await params).id);
+// GET /api/posts/[id]
+export async function GET(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  await connectDB();
+  const { id } = await params;
 
-  if (!id) {
-    return NextResponse.json({ error: "Missing id" }, { status: 400 });
+  try {
+    const post = await PostModel.findById(id.toString()).lean();
+    if (!post) {
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
+    return NextResponse.json(post, { status: 200 });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
   }
-
-  const idx = db.posts.findIndex((p: Post) => Number(p.id) === id);
-  if (idx === -1)
-    return NextResponse.json({ error: "Not found" }, { status: 404 });
-  const deleted = db.posts.splice(idx, 1)[0];
-  console.log({ deleted });
-
-  await writeDB(db);
-  return NextResponse.json(deleted, {
-    status: 200,
-  });
 }
 
-export async function GET(req: NextRequest, { params }: Params) {
-  const id = Number((await params).id);
-  const db = await readDB();
-  const post = db.posts.find((p: Post) => Number(p.id) === id);
-  if (!post) {
-    return NextResponse.json({ error: "Not found" }, { status: 404 });
-  }
-  return NextResponse.json(post, {
-    status: 200,
-  });
-}
+// PUT /api/posts/[id]
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  await connectDB();
 
-export async function PUT(req: NextRequest, { params }: Params) {
-  const id = Number((await params).id);
+  const { id } = await params;
+  console.log({id});
+  const postId = id.toString();
+  
   const { title, body } = await req.json();
 
-  if (!title || !body) {
+  if (!title?.trim() || !body?.trim()) {
     return NextResponse.json(
-      {
-        message: "Missing title or body",
-      },
-      {
-        status: 400,
-      }
+      { message: "Missing title or body" },
+      { status: 400 }
     );
   }
-  const db = await readDB();
-  const idx = db.posts.findIndex((p: Post) => p.id === id);
-  if (idx === -1)
-    return NextResponse.json({ error: "Not found" }, { status: 404 });
-  db.posts[idx] = { id, title, body };
-  await writeDB(db);
-  return NextResponse.json(db.posts[idx]);
+
+  try {
+    const updated = await PostModel.findByIdAndUpdate(
+      { _id: postId },
+      { title, body },
+      { new: true }
+    ).lean();
+
+    if (!updated) {
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(updated, { status: 200 });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
+  }
+}
+
+// DELETE /api/posts/[id]
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  await connectDB();
+  const { id } = await params;
+
+  try {
+    const deleted = await PostModel.findByIdAndDelete(id.toString()).lean();
+    if (!deleted) {
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
+    return NextResponse.json({ message: "Post deleted" });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
+  }
 }

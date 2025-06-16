@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-
+import { useUser } from "@auth0/nextjs-auth0";
 import { Loader, Plus } from "lucide-react";
 import { FormEvent, useState } from "react";
 
@@ -16,6 +16,7 @@ import { Label } from "@radix-ui/react-label";
 import addPost from "@/app/(admin)/admin/controller/addPost";
 const NewPostModal = () => {
   const queryClient = useQueryClient();
+  const { user } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const { mutate, isSuccess, isError, isPending, error, reset } = useMutation({
     mutationFn: addPost,
@@ -29,6 +30,8 @@ const NewPostModal = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
+    formData.append("userName", user?.name || "");
+    formData.append("picture", user?.picture || "");
     mutate(formData);
   };
 
@@ -60,7 +63,7 @@ const NewPostModal = () => {
           {isPending ? (
             <Loader></Loader>
           ) : (
-            <Button type="submit" form="newPostForm">
+            <Button disabled={!user} type="submit" form="newPostForm">
               Add
             </Button>
           )}

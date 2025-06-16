@@ -1,4 +1,4 @@
-async function getPostById(postId: number) {
+async function getPostById(postId: string) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${postId}`, {
     method: "GET",
   });

@@ -22,7 +22,7 @@ export function DeletePostDialog() {
     isError,
     error,
   } = useMutation({
-    mutationFn: async (postId: number) => {
+    mutationFn: async (postId: string) => {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${postId}`, {
         method: "DELETE",
       });
@@ -62,9 +62,12 @@ export function DeletePostDialog() {
           ) : (
             <AlertDialogAction
               onClick={() => {
-                deletePost(postId as number);
+                if (postId) {
+                  deletePost(postId);
+                }
               }}
               className="bg-destructive hover:bg-destructive/90"
+              disabled={!postId}
             >
               Delete
             </AlertDialogAction>

@@ -1,5 +1,8 @@
 export interface Post {
-  id: number;
+  _id: string;
+  userName: string;
   title: string;
   body: string;
+  picture?: string;
+  createdAt: Date;
 }

@@ -4,17 +4,19 @@ import { createContext, useContext } from "react";
 // context/PostContext.tsx
 
 type PostContextType = {
-  postId: number | null;
+  postId: string | null;
   isResetDbModal: boolean;
   setIsResetDbModal: (open: boolean) => void;
-  setPostId: (postId: number | null) => void;
+  setPostId: (postId: string | null) => void;
   isDeleteModalOpen: boolean;
   setIsDeleteModalOpen: (open: boolean) => void;
   isEditModalOpen: boolean;
   setIsEditModalOpen: (open: boolean) => void;
 };
 
- export const PostContext = createContext<PostContextType | undefined>(undefined);
+export const PostContext = createContext<PostContextType | undefined>(
+  undefined
+);
 
 export const usePostContext = () => {
   const context = useContext(PostContext);
@@ -25,7 +27,7 @@ export const usePostContext = () => {
 };
 
 export const PostProvider = ({ children }: { children: React.ReactNode }) => {
-  const [postId, setPostId] = useState<number | null>(null);
+  const [postId, setPostId] = useState<string | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isResetDbModal, setIsResetDbModal] = useState(false);

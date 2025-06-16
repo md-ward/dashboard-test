@@ -3,7 +3,7 @@ export async function updatePost({
   title,
   body,
 }: {
-  id: number;
+  id: string;
   title: string;
   body: string;
 }) {

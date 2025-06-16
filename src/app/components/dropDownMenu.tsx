@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { usePostContext } from "./post.state";
 
-const CustomDropDownMenu = ({ postId }: { postId: number }) => {
+const CustomDropDownMenu = ({ postId }: { postId: string }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const { setIsDeleteModalOpen, setPostId, setIsEditModalOpen } =
@@ -102,9 +102,9 @@ const Menu = ({
   setIsEditModalOpen,
   setIsDeleteModalOpen,
 }: {
-  postId: number;
+  postId: string;
   menuRef: RefObject<HTMLDivElement | null>;
-  setPostId: (postId: number | null) => void;
+  setPostId: (postId: string | null) => void;
   setIsEditModalOpen: (open: boolean) => void;
   setIsDeleteModalOpen: (open: boolean) => void;
 }) => {

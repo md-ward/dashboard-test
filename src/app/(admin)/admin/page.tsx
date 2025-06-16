@@ -2,6 +2,7 @@
 import {
   Card,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -12,17 +13,14 @@ import CustomPagination from "@/app/components/customPagination";
 import { DeletePostDialog } from "@/app/components/Modals/deleteModal";
 import EditPostModal from "@/app/components/Modals/editPostModal";
 import NewPostModal from "@/app/components/Modals/newPostModal";
-import { PostProvider, usePostContext } from "@/app/components/post.state";
-import { Button } from "@/components/ui/button";
-import { RefreshCcw } from "lucide-react";
+import { PostProvider } from "@/app/components/post.state";
 import { ResetDbDialog } from "@/app/components/Modals/resetDbModal";
 import NoPosts from "@/app/components/noPosts";
-
-type Post = {
-  id: number;
-  title: string;
-  body: string;
-};
+import { Post } from "@/lib/types";
+import { useUser } from "@auth0/nextjs-auth0";
+import Image from "next/image";
+import LogoutButton from "@/app/components/LogoutButton";
+import { Loader } from "@/app/components/loader";
 
 const PAGE_SIZE = 9;
 async function fetchPosts(
@@ -40,6 +38,7 @@ async function fetchPosts(
 
 export default function AdminPostPage() {
   const [page, setPage] = useState(1);
+  const { isLoading: isAuthLoading } = useUser();
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["posts", page],
@@ -49,6 +48,13 @@ export default function AdminPostPage() {
     staleTime: 1000 * 60,
   });
 
+  if (isAuthLoading) {
+    return (
+      <div className="p-4 h-screen  flex justify-center items-center w-screen overflow-hidden relative">
+        <Loader />
+      </div>
+    );
+  }
   if (isError)
     return <div className="p-4">Failed to load posts.,{error.message}</div>;
 
@@ -59,9 +65,11 @@ export default function AdminPostPage() {
       <div className="p-4 flex relative overflow-hidden flex-col gap-4  min-h-screen  items-center">
         <div className="flex flex-row max-w-7xl justify-between px-8  items-center  h-fit  w-full">
           <h1 className="text-2xl font-bold ">Admin Posts</h1>
-          <div className="flex gap-4">
+          <div className="flex gap-4 items-center">
             <NewPostModal />
-            <ResetButton />
+            {/* Set A PreSet Of Data To the  Database */}
+            {/* For Logout  */}
+            <LogoutButton />
           </div>
         </div>
         {isLoading ? (
@@ -73,9 +81,9 @@ export default function AdminPostPage() {
         ) : posts && posts.length > 0 ? (
           <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full grow max-w-7xl">
             {posts.map((post) => (
-              <div key={post.id} className=" h-fit ">
+              <div key={post._id} className=" h-fit ">
                 <Card className="p-4 relative w-full h-44 overflow-hidden ">
-                  <CustomDropDownMenu postId={post.id} />
+                  <CustomDropDownMenu postId={post._id} />
                   <CardHeader>
                     <CardTitle className="text-start -mt-2 -ml-6 truncate w-full">
                       {post.title}
@@ -84,6 +92,23 @@ export default function AdminPostPage() {
                   <CardDescription className="line-clamp-4 h-[4lh] text-sm text-muted-foreground">
                     {post.body}
                   </CardDescription>
+                  <CardFooter>
+                    <span className="text-sm text-muted-foreground  flex">
+                      {post.picture && (
+                        <Image
+                          title={post.userName}
+                          src={post.picture}
+                          alt={post.userName ?? "User avatar"}
+                          width={20}
+                          height={20}
+                          className="rounded-full aspect-square "
+                        />
+                      )}
+                      <time className="ml-2 text-sm text-muted-foreground">
+                        {new Date(post.createdAt).toLocaleString()}
+                      </time>
+                    </span>
+                  </CardFooter>
                 </Card>
               </div>
             ))}
@@ -117,21 +142,4 @@ const CardSkeleton = () => {
   );
 };
 
-const ResetButton = () => {
-  const { setIsResetDbModal } = usePostContext();
-  return (
-    <Button
-      className="transition-all  ease-in-out duration-200 cursor-pointer"
-      onMouseEnter={(e) => {
-        e.currentTarget.classList.add("addButton");
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.classList.remove("addButton");
-      }}
-      onClick={() => setIsResetDbModal(true)}
-      title="this will reset the database"
-    >
-      <RefreshCcw></RefreshCcw>
-    </Button>
-  );
-};
+

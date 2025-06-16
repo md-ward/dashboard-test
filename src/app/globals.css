@@ -218,6 +218,14 @@
   position: relative;
 }
 
+.addButton:has(.rounded-full),
+.addButton:has(.rounded-full)::before,
+.addButton:has(.rounded-full)::after {
+  border-radius: 50px;
+}
+
+
+
 @property --angle {
   syntax: "<angle>";
   initial-value: 0deg;

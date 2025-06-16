@@ -1,24 +1,10 @@
-import { readFile, writeFile } from "fs/promises";
-import path from "path";
-import { Post } from "./types";
-const dbPath = path.join("./src", "db.json");
+import mongoose from "mongoose";
 
-async function readDB() {
-  try {
-    const data = await readFile(dbPath, "utf-8");
-    return JSON.parse(data) as { posts: Post[] };
-  } catch (err) {
-    console.error(err);
-    return { posts: [] };
-  }
+export async function connectDB() {
+  if (mongoose.connection.readyState === 1) return;
+
+  await mongoose.connect(process.env.NEXT_MONGO_URI!, {
+
+    dbName: process.env.DB_NAME,
+  });
 }
-
-async function writeDB(data: { posts: Post[] }) {
-  try {
-    await writeFile(dbPath, JSON.stringify(data, null, 2));
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-export { writeDB, readDB };

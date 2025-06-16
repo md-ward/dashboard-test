@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/card";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import BackgroundAnimation from "../components/Background";
+import BackgroundAnimation from "../../components/Background";
 
 interface PostProps {
   params: Promise<{ id: string }>;

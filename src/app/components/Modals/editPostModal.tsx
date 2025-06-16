@@ -21,8 +21,8 @@ const EditPostModal = () => {
   const [title, setTitle] = useState<string>("");
   const [body, setBody] = useState<string>("");
   const { data: postData, isPending } = useQuery({
-    enabled: typeof postId === "number" && postId !== 0,
-    queryFn: () => getPostById(Number(postId)),
+    enabled: postId !== undefined && postId !== null,
+    queryFn: () => getPostById(postId as string),
     queryKey: ["post", postId],
     staleTime: Infinity,
   });
@@ -30,7 +30,7 @@ const EditPostModal = () => {
 
   const { mutate, isPending: isMutatePending } = useMutation({
     mutationFn: updatePost,
-
+    mutationKey: ["post", postId],
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
       setIsEditModalOpen(false);
@@ -50,7 +50,7 @@ const EditPostModal = () => {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     mutate({
-      id: Number(postId),
+      id: postId as string,
       title,
       body,
     });
@@ -75,7 +75,7 @@ const EditPostModal = () => {
               className="w-full p-2 border border-gray-300 rounded-md mb-2"
             />
             <textarea
-            rows={5}
+              rows={5}
               value={body}
               onChange={(e) => setBody(e.target.value)}
               name="body"
