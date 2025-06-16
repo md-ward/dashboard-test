@@ -8,6 +8,6 @@ export const auth0 = new Auth0Client({
   secret: process.env.AUTH0_SECRET,
   allowInsecureRequests: true,
   authorizationParameters: {
-    redirect_uri: "http://localhost:3000/admin",
+    redirect_uri: `${process.env.AUTH0_BASE_URL}/admin`,
   },
 });
