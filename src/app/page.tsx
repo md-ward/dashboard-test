@@ -12,6 +12,7 @@ import { Metadata } from "next";
 import { DisclaimerToast } from "./components/Disclaimer";
 import Image from "next/image";
 import TechButton from "./components/usedTechNav";
+import { Pin } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Visitors | Posts",
@@ -47,6 +48,9 @@ const Page = async ({
           <div key={post._id} className="h-fit">
             <Link href={`/[id]`} as={`/posts/${post._id}`}>
               <Card className="p-4 relative w-full  overflow-hidden hover:shadow-md shadow-blue-200 duration-200 ease-in-out ">
+                {post.pinned && (
+                  <Pin className="size-4 absolute top-0 right-1 rotate-45"></Pin>
+                )}
                 <CardHeader className="w-full ">
                   <CardTitle className="text-start    !w-full">
                     {post.title}

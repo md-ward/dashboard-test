@@ -9,11 +9,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useUser } from "@auth0/nextjs-auth0";
-import { Loader, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { FormEvent, useState } from "react";
 
 import { Label } from "@radix-ui/react-label";
 import addPost from "@/app/(admin)/admin/controller/addPost";
+import { Loader } from "../loader";
 const NewPostModal = () => {
   const queryClient = useQueryClient();
   const { user } = useUser();
@@ -61,7 +62,7 @@ const NewPostModal = () => {
         </form>
         <AlertDialogFooter>
           {isPending ? (
-            <Loader></Loader>
+            <Loader />
           ) : (
             <Button disabled={!user} type="submit" form="newPostForm">
               Add

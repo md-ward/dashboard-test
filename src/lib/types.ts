@@ -5,4 +5,6 @@ export interface Post {
   body: string;
   picture?: string;
   createdAt: Date;
+  isEditable?: boolean;
+  pinned?: boolean;
 }

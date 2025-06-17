@@ -6,6 +6,8 @@ const PostSchema = new mongoose.Schema(
     body: { type: String, required: true },
     userName: { type: String, required: true },
     picture: { type: String, required: false },
+    isEditable: { type: Boolean, required: false, default: true },
+    pinned: { type: Boolean, required: false, default: false },
   },
   { timestamps: true }
 );

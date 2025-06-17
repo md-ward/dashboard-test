@@ -129,7 +129,7 @@ export default function TechShowcasePage() {
               Try logging in as admin or return to the homepage.
             </CardDescription>
           </CardHeader>
-          <CardContent className="flex flex-col sm:flex-row gap-4 justify-center mt-4">
+          <CardContent className="flex flex-col sm:flex-row gap-4 justify-center mt-4 **:!cursor-pointer">
             <Link href="/admin">
               <Button variant="default">Try Admin Dashboard</Button>
             </Link>

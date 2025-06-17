@@ -21,6 +21,7 @@ import { useUser } from "@auth0/nextjs-auth0";
 import Image from "next/image";
 import LogoutButton from "@/app/components/LogoutButton";
 import { Loader } from "@/app/components/loader";
+import { Pin } from "lucide-react";
 
 const PAGE_SIZE = 9;
 async function fetchPosts(
@@ -82,8 +83,16 @@ export default function AdminPostPage() {
           <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full grow max-w-7xl">
             {posts.map((post) => (
               <div key={post._id} className=" h-fit ">
-                <Card className="p-4 relative w-full h-44 overflow-hidden ">
-                  <CustomDropDownMenu postId={post._id} />
+                <Card
+                  title={"this post cannot be edited"}
+                  className={`p-4 relative w-full h-44 overflow-hidden ${
+                    post.isEditable == false ? "border border-red-500" : ""
+                  }`}
+                >
+                  {post.pinned && (
+                    <Pin className="size-4 absolute top-0 right-1 rotate-45"></Pin>
+                  )}
+                  {post.isEditable && <CustomDropDownMenu postId={post._id} />}{" "}
                   <CardHeader>
                     <CardTitle className="text-start -mt-2 -ml-6 truncate w-full">
                       {post.title}
@@ -141,5 +150,3 @@ const CardSkeleton = () => {
     </Card>
   );
 };
-
-

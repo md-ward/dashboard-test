@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
   const totalCount = await PostModel.countDocuments();
   const totalPages = Math.ceil(totalCount / limit);
   const posts = await PostModel.find()
-    .sort({ createdAt: -1 }) // optional: latest first
+    .sort({ pinned: -1, createdAt: 1 }) // optional: latest first
     .skip((page - 1) * limit)
     .limit(limit)
     .lean();
