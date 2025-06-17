@@ -3,6 +3,19 @@ import { auth0 } from "./lib/auth0";
 
 export async function middleware(request: NextRequest) {
   const authRes = await auth0.middleware(request);
+  const mongo = process.env.NEXT_MONGO_URI;
+  const db = process.env.DB_NAME;
+  const authSecret = process.env.AUTH0_SECRET;
+  const authUrl = process.env.AUTH0_BASE_URL;
+  const auth0Domain = process.env.AUTH0_DOMAIN;
+  console.log({
+    mongo,
+    db,
+    authSecret,
+    authUrl,
+    auth0Domain,
+  });
+  console.log({ path: request.nextUrl.pathname });
 
   // authentication routes — let the middleware handle it
   if (request.nextUrl.pathname.startsWith("/auth")) {
@@ -13,7 +26,6 @@ export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname === "/") {
     return authRes;
   }
-
 
   const { origin } = new URL(request.url);
   const session = await auth0.getSession();
